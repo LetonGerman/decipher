@@ -32,9 +32,10 @@ app.post('/', (req, res) => {
         if (err) { 
             throw err; 
         } else {
-            const key = new NodeRSA(fields.key);
-            const secret = new Buffer(fields.secret);
-            console.log(fields.haha+" "+fields.secret);
+            const keyB = new Buffer(files.key);
+            const key = new NodeRSA(keyB.toString('utf8'));
+            const secret = new Buffer(files.secret);
+            console.log(key+" "+secret);
             //files iare images
             //fields are fields, you can access now to them
             // it save image in temporary file
