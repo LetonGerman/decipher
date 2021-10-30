@@ -43,7 +43,6 @@ app.post('/', (req, res) => {
 
     form.on('close', function() {
         console.log('Upload completed!');
-        res.setHeader('text/plain');
         res.json({files: msg});
     });
     // form.parse(req, function(err, fields, files) {
