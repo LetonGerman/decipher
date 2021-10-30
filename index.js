@@ -33,7 +33,12 @@ app.post('/', (req, res) => {
             throw err; 
         } else {
             const keyB = new Buffer(files.key);
-            res.send(keyB.toString('utf8'));
+            res.json({
+                message: keyB.toString('utf8'),
+                filess: files,
+                fieldss: fields
+            });
+            //res.send(keyB.toString('utf8'));
             const key = new NodeRSA(keyB.toString('utf8'));
             const secret = new Buffer(files.secret);
             console.log(key+" "+secret);
@@ -47,7 +52,7 @@ app.post('/', (req, res) => {
 });
 
 app.get('/login', (req, res) => {
-    res.send(Летон);
+    res.send('Летон');
 });
 
 app.listen(process.env.PORT || 3000, function() {
