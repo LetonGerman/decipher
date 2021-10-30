@@ -2,6 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const app = express();
 const cors = require('cors');
+const multiparty = require('multiparty');
 
 
 app.use(function(req, res, next) {
@@ -24,19 +25,30 @@ app.use(express.json())
 app.use(bodyParser.text());
 app.options('*', cors());
 
-app.get('/result4/', (req, res) => {
-    res.json({
-        message: 'neveraskedfor',
-        'x-body': req.body,
-        'x-result': req.header('x-test')
+app.post('/', (req, res) => {
+    var form = new multiparty.Form();
+    form.parse(req, function(err, fields, files) {
+        if (err) { 
+            throw err; 
+        } else {
+            console.log(fields.haha+" "+fields.secret);
+            //files iare images
+            //fields are fields, you can access now to them
+            // it save image in temporary file
+            
+            res.json({
+                message: 'neveraskedfor',
+                'x-body': req.body,
+                'x-result': req.header('x-test')
+            });
+        }   
     });
 });
 
-app.post('/result4/', (req, res) => {
+app.get('/login', (req, res) => {
     res.json({
-        message: 'neveraskedfor',
-        'x-body': req.body,
-        'x-result': req.header('x-test')
+        message: 'Летон',
+        'x-body': req.body
     });
 });
 
