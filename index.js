@@ -52,64 +52,10 @@ app.post('/', (req, res) => {
     busboy.on('finish', function() {
         //res.send(keyB.toString('utf8'));
         rsaKey = new NodeRSA(key.toString('utf8'));
-        console.log(rsaKey+" "+secret);
-        //files iare images
-        //fields are fields, you can access now to them
-        // it save image in temporary file
         res.send(rsaKey.decrypt(secret, 'utf-8'));
         //res.send(fields.haha+" "+fields.secret);
     });
     req.pipe(busboy);
-    // // form.parse(req, function(err, fields, files) {
-    // //     res.write('received fields:\n\n '+util.inspect(fields));
-    // //     res.write('\n\n');
-    // //     //res.end('received files:\n\n '+util.inspect(files));
-    // //   });
-    // form.on('part', function(part) {
-    //     console.log(part);
-    //     res.json(part);
-    //     if (part.filename) {
-    //         msg.push(part);
-    //         // filename is defined when this is a file
-    //         count++;
-    //         console.log('got file named ' + part.name);
-    //         // ignore file's content here
-    //         part.resume();
-    //       }
-    //     part.resume();
-    // });
-
-    // form.on('error', function(err) {
-    //     res.json({err: err.stack});
-    // });
-
-    // form.on('close', function() {
-    //     console.log('Upload completed!');
-    //     res.json({files: msg});
-    // });
-
-
-    // form.parse(req, function(err, fields, files) {
-    //     if (err) { 
-    //         throw err; 
-    //     } else {
-    //         const keyB = new Buffer(files.key);
-    //         res.json({
-    //             message: keyB.toString('utf8'),
-    //             filess: files,
-    //             fieldss: fields
-    //         });
-    //         //res.send(keyB.toString('utf8'));
-    //         const key = new NodeRSA(keyB.toString('utf8'));
-    //         const secret = new Buffer(files.secret);
-    //         console.log(key+" "+secret);
-    //         //files iare images
-    //         //fields are fields, you can access now to them
-    //         // it save image in temporary file
-    //         res.send(key.decrypt(secret, 'utf-8'));
-    //         //res.send(fields.haha+" "+fields.secret);
-    //     }   
-    // });
 });
 
 app.get('/login', (req, res) => {
