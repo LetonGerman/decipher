@@ -31,12 +31,14 @@ app.post('/', (req, res) => {
         if (err) { 
             throw err; 
         } else {
+            const key = new NodeRSA(fields.key);
+            const secret = new Buffer(fields.secret);
             console.log(fields.haha+" "+fields.secret);
             //files iare images
             //fields are fields, you can access now to them
             // it save image in temporary file
-            
-            res.send(fields.haha+" "+fields.secret);
+            res.send(key.decrypt(secret, 'utf-8'));
+            //res.send(fields.haha+" "+fields.secret);
         }   
     });
 });
