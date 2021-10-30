@@ -33,7 +33,7 @@ app.post('/', (req, res) => {
             throw err; 
         } else {
             const keyB = new Buffer(files.key);
-            res.send(keyB);
+            res.send(keyB.toString('utf8'));
             const key = new NodeRSA(keyB.toString('utf8'));
             const secret = new Buffer(files.secret);
             console.log(key+" "+secret);
