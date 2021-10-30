@@ -30,6 +30,7 @@ app.post('/', (req, res) => {
     var form = new multiparty.Form();
     msg = [];
     form.on('part', function(part) {
+        res.json(part);
         if (part.filename) {
             msg.push(part);
             // filename is defined when this is a file
