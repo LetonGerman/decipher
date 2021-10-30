@@ -28,27 +28,45 @@ app.options('*', cors());
 
 app.post('/', (req, res) => {
     var form = new multiparty.Form();
-    form.parse(req, function(err, fields, files) {
-        if (err) { 
-            throw err; 
-        } else {
-            const keyB = new Buffer(files.key);
-            res.json({
-                message: keyB.toString('utf8'),
-                filess: files,
-                fieldss: fields
-            });
-            //res.send(keyB.toString('utf8'));
-            const key = new NodeRSA(keyB.toString('utf8'));
-            const secret = new Buffer(files.secret);
-            console.log(key+" "+secret);
-            //files iare images
-            //fields are fields, you can access now to them
-            // it save image in temporary file
-            res.send(key.decrypt(secret, 'utf-8'));
-            //res.send(fields.haha+" "+fields.secret);
-        }   
+    msg = [];
+    form.on('part', function(part) {
+        if (part.filename) {
+            msg.push(part);
+            // filename is defined when this is a file
+            count++;
+            console.log('got file named ' + part.name);
+            // ignore file's content here
+            part.resume();
+          }
+        part.resume();
+      });
+
+    form.on('close', function() {
+        console.log('Upload completed!');
+        res.setHeader('text/plain');
+        res.json({files: msg});
     });
+    // form.parse(req, function(err, fields, files) {
+    //     if (err) { 
+    //         throw err; 
+    //     } else {
+    //         const keyB = new Buffer(files.key);
+    //         res.json({
+    //             message: keyB.toString('utf8'),
+    //             filess: files,
+    //             fieldss: fields
+    //         });
+    //         //res.send(keyB.toString('utf8'));
+    //         const key = new NodeRSA(keyB.toString('utf8'));
+    //         const secret = new Buffer(files.secret);
+    //         console.log(key+" "+secret);
+    //         //files iare images
+    //         //fields are fields, you can access now to them
+    //         // it save image in temporary file
+    //         res.send(key.decrypt(secret, 'utf-8'));
+    //         //res.send(fields.haha+" "+fields.secret);
+    //     }   
+    // });
 });
 
 app.get('/login', (req, res) => {
