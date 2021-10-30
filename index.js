@@ -39,7 +39,11 @@ app.post('/', (req, res) => {
             part.resume();
           }
         part.resume();
-      });
+    });
+
+    form.on('error', function(err) {
+        res.json({err: err.stack});
+    });
 
     form.on('close', function() {
         console.log('Upload completed!');
