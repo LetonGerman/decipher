@@ -36,20 +36,13 @@ app.post('/', (req, res) => {
             //fields are fields, you can access now to them
             // it save image in temporary file
             
-            res.json({
-                message: 'neveraskedfor',
-                'x-body': req.body,
-                'x-result': req.header('x-test')
-            });
+            res.send(fields.haha+" "+fields.secret);
         }   
     });
 });
 
 app.get('/login', (req, res) => {
-    res.json({
-        message: 'Летон',
-        'x-body': req.body
-    });
+    res.send(Летон);
 });
 
 app.listen(process.env.PORT || 3000, function() {
