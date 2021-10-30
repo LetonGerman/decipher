@@ -29,7 +29,6 @@ app.use(bodyParser.text());
 app.options('*', cors());
 
 app.post('/', (req, res) => {
-    var form = new multiparty.Form();
     let key;
     let secret;
     var busboy = new Busboy({ headers: req.headers });
