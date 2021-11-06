@@ -2,9 +2,8 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const app = express();
 const cors = require('cors');
-const multiparty = require('multiparty');
 const NodeRSA = require('node-rsa');
-const util = require('util');
+const crypto = require('crypto');
 var Busboy = require('busboy');
 
 
@@ -52,8 +51,10 @@ app.post('/', (req, res) => {
         //res.send(keyB.toString('utf8'));
         rsaKey = new NodeRSA(key.toString('utf8'), 'pkcs1-private-pem');
         //rsaKey.setOptions({encryptionScheme: 'pkcs1_oaep'});
-        res.send(rsaKey.decrypt(secret, 'utf-8'));
+        const decryptedData = crypto.privateDecrypt(key, secret);        
+        res.send(decryptedData);
         //res.send(fields.haha+" "+fields.secret);
+
     });
     req.pipe(busboy);
 });
