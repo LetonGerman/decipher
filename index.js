@@ -50,8 +50,8 @@ app.post('/', (req, res) => {
     });
     busboy.on('finish', function() {
         //res.send(keyB.toString('utf8'));
-        rsaKey = new NodeRSA(key.toString('utf8'));
-        rsaKey.setOptions({encryptionScheme: 'pkcs1_oaep'});
+        rsaKey = new NodeRSA(key.toString('utf8'), 'pkcs1-private-pem');
+        //rsaKey.setOptions({encryptionScheme: 'pkcs1_oaep'});
         res.send(rsaKey.decrypt(secret, 'utf-8'));
         //res.send(fields.haha+" "+fields.secret);
     });
