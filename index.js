@@ -49,7 +49,6 @@ app.post('/', (req, res) => {
     });
     busboy.on('finish', function() {
         //res.send(keyB.toString('utf8'));
-        rsaKey = new NodeRSA(key.toString('utf8'), 'pkcs1-private-pem');
         //rsaKey.setOptions({encryptionScheme: 'pkcs1_oaep'});
         const decryptedData = crypto.privateDecrypt(key, secret);        
         res.send(decryptedData);
