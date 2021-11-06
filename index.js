@@ -28,17 +28,16 @@ app.use(bodyParser.text());
 app.options('*', cors());
 
 app.post('/', (req, res) => {
-    let key;
-    let secret;
+    let key = [];
+    let secret = [];
     var busboy = new Busboy({ headers: req.headers });
     busboy.on('file', function(fieldname, file, filename, encoding, mimetype) {
       console.log('File [' + fieldname + ']: filename: ' + filename + ', encoding: ' + encoding + ', mimetype: ' + mimetype);
       file.on('data', function(data) {
-        console.log(data);
         if (fieldname === 'key') {
-            key = data;
+            key.push(data);
         } else {
-            secret = data;
+            secret.push(data);
         }
       });
       file.on('end', function() {
@@ -49,12 +48,8 @@ app.post('/', (req, res) => {
       console.log('Field [' + fieldname + ']: value: ' + inspect(val));
     });
     busboy.on('finish', function() {
-        //res.send(keyB.toString('utf8'));
-        //rsaKey.setOptions({encryptionScheme: 'pkcs1_oaep'});
-        const decryptedData = crypto.privateDecrypt(key, secret);        
+        const decryptedData = crypto.privateDecrypt(Buffer.concat(key), Buffer.concat(secret));        
         res.send(decryptedData);
-        //res.send(fields.haha+" "+fields.secret);
-
     });
     req.pipe(busboy);
 });
