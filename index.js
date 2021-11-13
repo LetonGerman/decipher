@@ -2,8 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const app = express();
 const cors = require('cors');
-const NodeRSA = require('node-rsa');
-const crypto = require('crypto');
+const sizeOf = require('image-size');
 var Busboy = require('busboy');
 
 
@@ -28,16 +27,13 @@ app.use(bodyParser.text());
 app.options('*', cors());
 
 app.post('/', (req, res) => {
-    let key = [];
-    let secret = [];
+    let image = [];
     var busboy = new Busboy({ headers: req.headers });
     busboy.on('file', function(fieldname, file, filename, encoding, mimetype) {
       console.log('File [' + fieldname + ']: filename: ' + filename + ', encoding: ' + encoding + ', mimetype: ' + mimetype);
       file.on('data', function(data) {
-        if (fieldname === 'key') {
-            key.push(data);
-        } else {
-            secret.push(data);
+        if (fieldname === 'image') {
+            image.push(data);
         }
       });
       file.on('end', function() {
@@ -48,14 +44,15 @@ app.post('/', (req, res) => {
       console.log('Field [' + fieldname + ']: value: ' + inspect(val));
     });
     busboy.on('finish', function() {
-        const decryptedData = crypto.privateDecrypt(Buffer.concat(key), Buffer.concat(secret));        
-        res.send(decryptedData);
+      const dimensions = sizeOf(Buffer.concat(image));
+      console.log(dimensions);    
+      res.json({width: dimensions.width, height: dimensions.height});
     });
     req.pipe(busboy);
 });
 
 app.get('/login', (req, res) => {
-    res.send('Летон');
+    res.send('German Leton');
 });
 
 app.listen(process.env.PORT || 3000, function() {
