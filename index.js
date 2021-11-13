@@ -26,7 +26,7 @@ app.use(express.json())
 app.use(bodyParser.text());
 app.options('*', cors());
 
-app.post('/', (req, res) => {
+app.post('/size2json', (req, res) => {
     let image = [];
     var busboy = new Busboy({ headers: req.headers });
     busboy.on('file', function(fieldname, file, filename, encoding, mimetype) {
