@@ -10,7 +10,6 @@ app.use(function(req, res, next) {
     res.setHeader('Access-Control-Allow-Origin','*');
     res.setHeader('Access-Control-Allow-Methods', 'GET,POST,DELETE,OPTIONS');
     res.setHeader('Access-Control-Allow-Headers','x-test');
-    res.setHeader('Content-Type', 'application/json');
     next();
   });
 
@@ -25,6 +24,12 @@ app.use(
 app.use(express.json())
 app.use(bodyParser.text());
 app.options('*', cors());
+
+
+app.get('/login', (req, res) => {
+  res.setHeader('Content-Type', 'text/plain');
+  res.send('German Leton');
+});
 
 app.post('/size2json', (req, res) => {
     let image = [];
@@ -46,13 +51,10 @@ app.post('/size2json', (req, res) => {
     busboy.on('finish', function() {
       const dimensions = sizeOf(Buffer.concat(image));
       console.log(dimensions);    
+      res.setHeader('Content-Type', 'application/json');
       res.json({width: dimensions.width, height: dimensions.height});
     });
     req.pipe(busboy);
-});
-
-app.get('/login', (req, res) => {
-    res.send('German Leton');
 });
 
 app.listen(process.env.PORT || 3000, function() {
