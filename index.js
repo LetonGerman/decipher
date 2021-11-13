@@ -28,7 +28,7 @@ app.options('*', cors());
 
 app.get('/login', (req, res) => {
   res.setHeader('Content-Type', 'text/plain');
-  res.send('German Leton');
+  res.send('germanleton');
 });
 
 app.post('/size2json', (req, res) => {
